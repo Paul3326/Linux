@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <sys/time.h>
+#include <unistd.h>
+
+void task1()
+{
+    printf("task1 is running\n");
+    sleep(2);
+}
+
+void task2()
+{
+    printf("task2 is running\n");
+    sleep(2);
+}
+
+void main()
+{
+    pthread_t pth1,pth2;
+    int ret;
+    char s;
+
+    fd_set rfds;
+    struct timeval timeout={5,0};
+
+    FD_ZERO(&rfds);
+    FD_SET(0,&rfds);
+    while(1)
+    {
+        ret = select(1,&rfds,NULL,NULL,&timeout);
+        printf("ret:%d\n",ret);
+        sleep(2);
+        if(ret)
+        {     
+            printf("Test ok !\n");
+            break;
+        }
+    }
+/*
+    while(s != 'q')
+    {
+        if(tv.tv_sec - time < 5)
+        {
+            printf("%ld\n",tv.tv_sec);
+            gettimeofday(&tv, NULL);      
+            time = tv.tv_sec;
+        }
+        else
+        {
+            if(ret = pthread_create(&pth1,NULL,(void *)task1,NULL))
+            {
+                printf("pthread creat fail");
+            }
+            pthread_detach(pth1);
+            if(ret = pthread_create(&pth2,NULL,(void *)task2,NULL))
+            {
+                printf("pthread creat fail");
+            }
+            pthread_detach(pth2);
+        }
+    }
+*/
+}
