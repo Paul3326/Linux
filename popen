@@ -1,0 +1,29 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include <string.h>
+
+int main()
+{
+    FILE *fp = NULL;
+    char cmd[256];
+    char buffer[1024];
+
+    memset(cmd, 0, sizeof(cmd));
+    snprintf(cmd,sizeof(cmd),"pwd");
+    
+    fp = popen(cmd, "r");
+    if(NULL == fp)
+    {
+	printf("Popen error!\n");
+    }
+    else
+    {
+	if(fgets(buffer,sizeof(buffer),fp) != NULL)
+	{
+	    printf("%s",buffer);	
+	}
+        pclose(fp);
+    }
+    return 0;
+}
+  
