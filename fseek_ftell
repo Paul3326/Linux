@@ -6,7 +6,7 @@ int main()
     stream = fopen("test.dat","r");
     if(stream == NULL)
     {
-	      printf("fopen error!\n");
+	printf("fopen error!\n");
     }
     fseek(stream,0L,SEEK_END);
     printf("%ld\n",ftell(stream));
