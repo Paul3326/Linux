@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node
+{
+    struct Node *next;
+    int value;
+}Node;
+
+
+typedef struct __linklist__
+{
+    Node *head;
+    Node *tail;
+    int size;
+}LinkList;
+
+void LinkList_Init(LinkList *plist)
+{
+    plist->head = NULL;
+    plist->tail = NULL;
+    plist->size = 0;
+}
+
+int LinkList_Count(LinkList *plist)
+{
+    int count;
+    count = plist->size;
+    return count;
+}
+
+int LinkList_AddTail(LinkList *plist,int pvalue)
+{
+    Node *pnode = (Node *)malloc(sizeof(Node));
+
+    if(pnode != NULL)
+    {
+		  pnode->value = pvalue;
+    	if(plist->head == NULL)
+    	{
+			      pnode->next = NULL;
+            plist->head = pnode;
+			      plist->tail = pnode;
+    	}
+    	else
+    	{
+            pnode->next = NULL;
+			      plist->tail->next = pnode;
+            plist->tail = pnode;
+    	}
+    	plist->size++;
+		  return 0;
+    }
+    return 1;
+} 
+
+void LinkList_Disp(LinkList *plist)
+{    
+    Node *pnode = plist->head;
+    
+    while(pnode != NULL)
+    {
+        printf("===%d\n",pnode->value);
+		    pnode = pnode->next;
+    }
+    free(pnode);
+}
+
+void LinkList_RMHead(LinkList *plist)
+{
+    Node *pnode = plist->head;
+    if(pnode->next == NULL)
+    {
+		    plist->head = NULL;
+		    plist->tail = NULL;
+    }
+    else
+    {
+		    plist->head = pnode->next;
+    }
+    plist->size--;
+    if(plist->size < 0)	plist->size = 0;
+    free(pnode);
+}
+
+
+void LinkList_RMALL(LinkList *plist)
+{
+    Node *pnode;
+    while(plist->head != NULL)
+    {
+		    pnode = plist->head->next;
+        free(plist->head);
+
+		    plist->head = pnode;
+    }
+    plist->size = 0;
+    free(pnode);
+}
+
+int main(int argc,char **argv)
+{
+    LinkList list;
+    LinkList_Init(&list);
+
+    LinkList_AddTail(&list,10);
+    LinkList_AddTail(&list,20);    
+    LinkList_AddTail(&list,30);
+    LinkList_AddTail(&list,40);
+    LinkList_Disp(&list);
+    printf("==========================\n");
+    LinkList_RMHead(&list);
+    LinkList_Disp(&list);
+    printf("==========================\n");
+
+    LinkList_RMALL(&list);
+    LinkList_Disp(&list);
+    return 0;
+}
+
