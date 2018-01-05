@@ -1,0 +1,26 @@
+typedef struct
+{
+    int  data1;  
+    int  data2;   
+    char data3;   
+    int  data4;   
+    int  data5;   
+}__attribute__(( packed, aligned(1))) Frame;
+
+
+整个结构体以1个字节对齐，所以4+4+1+4+4=17
+sizeof(Frame) = 17;  
+
+
+typedef union
+{
+    int  data1;  
+    int  data2;   
+    char data3;   
+    int  data4;   
+    int  data5;   
+}__attribute__(( packed, aligned(1))) Frame;
+
+
+整个结合体以最大的int对齐，所以是4
+sizeof(Frame) = 4;  
