@@ -5,11 +5,14 @@ typedef struct
     char data3;   
     int  data4;   
     int  data5;   
-}__attribute__(( packed, aligned(1))) Frame;
+}__attribute__(( packed, aligned(2))) Frame;
 
+整个结构体以2个字节对齐，所以4+4+2+4+4=18
+sizeof(Frame) = 18;  
 
-整个结构体以1个字节对齐，所以4+4+1+4+4=17
-sizeof(Frame) = 17;  
+packed默认的aligned是1
+aligned必须是2的指数次幂
+
 
 
 typedef union
