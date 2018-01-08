@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <string.h>
+
+/**
+ *@brief:  split string
+ *@param:  *string    *string formate
+ *@retval: no
+ */
+void fun(char *string,const char *delim)
+{
+    char *p = NULL;
+    static int count = 0;
+    p = strtok(string,delim);
+    while(p)
+    {
+        printf("%d===%s\n",count++,p);
+        p = strtok(NULL,".");
+
+    }
+}
+
+int main(int argc,char **argv)
+{
+    const char *delim = ":";
+    char str[256] = "http:192.168.1.12";
+    fun(str,delim);
+}
