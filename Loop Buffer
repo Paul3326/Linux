@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define UART_LEN 4
+
+typedef struct __uart_bf__{
+	char buf[UART_LEN];
+	int ptr_in;
+	int ptr_out;
+	int len;
+}UART_BF;
+
+char Init_Uart(UART_BF *pBuf)
+{
+	pBuf->ptr_in = pBuf->ptr_out = 0;
+	pBuf->len = 0;
+	return 0;
+}
+
+char In_Uart(UART_BF *pbuf,char ch)
+{
+	printf("pbuf->ptr_in:%d\n",pbuf->ptr_in);
+	if((pbuf->ptr_in + 1)%UART_LEN == pbuf->ptr_out)
+	{
+		printf("Out Length Error!\n");
+		return 1;
+	}
+	pbuf->buf[pbuf->ptr_in] = ch;
+	pbuf->ptr_in = (pbuf->ptr_in + 1)%UART_LEN;
+	return 0;
+}
+
+char Out_Uart(UART_BF *pbuf)
+{
+	char ch;
+	if(pbuf->ptr_out %UART_LEN == pbuf->ptr_in)
+	{
+		printf("Out Length Error!\n");
+		return 1;
+	}
+	ch = pbuf->buf[pbuf->ptr_out];
+	pbuf->ptr_out =(pbuf->ptr_out + 1)%UART_LEN;
+	printf("char is %c\n",ch);
+	return 0;
+}
+int main(int argc,char **argv)
+{
+	UART_BF *temp;
+	char ch = 0x30;
+    if(Init_Uart(&temp) == 0)
+		printf("Init_Uart OK!\n");
+    while(In_Uart(&temp,ch) == 0)
+	{
+		if(Out_Uart(&temp) == 0)
+		{
+			printf("Out_Uart OK!\n");
+		}
+		if(ch >= 0x39)
+			break;
+		ch ++;
+	}
+	printf("Finish!\n");
+
+    return 0;
+}
