@@ -1,0 +1,13 @@
+		timer init()
+    {
+        period < 20ms
+        pluse = 0;
+    }
+    
+    pwmout(pwm_value)
+    {
+        if(pwm_value == 0) step = 100;
+        if(pwm_value == 20000) step = -100;
+        pwm_value += step;
+        user_pwm_setvalue(pwm_value);
+    }
