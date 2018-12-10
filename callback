@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//------------------1------------------------//
+typedef struct __callback__{
+	void (*callfun)(void);
+}CallBack;
+
+void callfun1(void)
+{
+	printf("callfun1 running!\n");	
+}
+
+void callfun2(void)
+{
+	printf("callfun2 running\n");
+}
+
+void initcallback(CallBack *pcallback)
+{
+	pcallback->callfun;
+}
+
+void callbackfun(void (*pcall)())
+{
+	return (*pcall)();
+}
+
+void main()
+{
+	CallBack *cb = (CallBack*)malloc(sizeof(CallBack));
+	initcallback(cb);
+	callbackfun(callfun1);
+	callbackfun(callfun2);
+	free(cb);
+}
+
+//------------------2------------------------//
+typedef void (*_callback) (void*);
+
+void callfun1()
+{
+	printf("callfun1 running!\n");
+}
+
+void callfun2()
+{
+	printf("callfun2 running!\n");
+}
+
+typedef struct {
+	int index;
+	_callback callfun;
+}CallBackTab;
+
+typedef enum {
+	callfun_end = 0,
+	callfun_index1,
+	callfun_index2,
+}callback_num_tab;
+
+
+CallBackTab CALLBACK_TAB[] = {
+	{callfun_index1,callfun1},
+	{callfun_index2,callfun2},
+	{callfun_end,NULL},
+};
+
+void main()
+{
+	int i;
+	for(i=0;i<2;i++)
+	{
+		CALLBACK_TAB[i].callfun(NULL);	
+	}
+}
