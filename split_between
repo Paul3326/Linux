@@ -1,0 +1,35 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "stdint.h"
+
+uint8_t	buf[16];
+void Str_split(char *srcstr,char *splitchr)
+{
+	char *strhead,*strrear;
+	memset(buf,0,sizeof(buf));
+
+	strhead=strstr(srcstr,splitchr);
+	strrear=strstr(strhead+strlen(splitchr),splitchr);
+
+	if((strhead==NULL)||(strrear==NULL)||(strhead>strrear))
+	{
+		printf("Not found\n");
+		return;	
+	}
+	else
+	{
+		strhead+=strlen(splitchr);
+		memcpy(buf,strhead,strrear - strhead);
+	}
+}
+
+
+void main()
+{
+	uint8_t test_buf[]="152wrqwe4,113.56784549,22.1234;";
+	Str_split(test_buf,",");
+
+	printf("%s\n",buf);
+	while(1);
+}
