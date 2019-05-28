@@ -1,0 +1,33 @@
+static double Data_Array2Double(uint8_t str[])
+{
+    uint8_t index = 0;
+    
+    double data = 0,pos = 10;
+    while('\0' != str[index])
+    {
+        if((str[index] >='0')&&(str[index] <='9'))
+        {
+            if(10 == pos)
+                data = data*pos + str[index] - 48;
+            else
+            {
+                data += (str[index] - 48)*pos;
+                pos = pos*0.10f;
+            }
+        }
+        if('.' == str[index])
+        {
+            pos = 0.10f;
+        }
+        index++;
+    }
+    printf("========%lf\n",data);
+    return data;
+}
+
+
+static double Data_Double2Array(uint8_t str[],double data)
+{
+  sprintf((char*)str,"%f",data);
+}
+
