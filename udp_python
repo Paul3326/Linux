@@ -1,0 +1,40 @@
+Server 端：
+
+#!/usr/bin/python3
+#-*-coding:UTF-8-*-
+
+from socket import *
+def main():
+    # 创建套接字
+    udp_socket_server=socket(AF_INET,SOCK_DGRAM)
+    # 绑定端口
+    udp_socket_server.bind(("127.0.0.1",8888))
+    # 接收数据 循环接收
+    while True:
+        recv=udp_socket_server.recvfrom(1024)
+        if "exit"==recv:
+            break
+        # 进行解码
+        print(recv[0].decode("utf-8")+"\n",recv,"\n")
+    # 关闭套接字
+    udp_socket_server.close()
+if __name__=="__main__":
+    main()
+******************************************************
+client 端：
+
+#!/usr/bin/python
+#-*-coding:UTF-8-*-
+
+from socket import *
+def main():
+    udp_socket_client=socket(AF_INET,SOCK_DGRAM)
+    udp_socket_client.sendto("HelloWorld",("192.168.1.104",8888))    
+    udp_socket_client.close()
+
+if __name__=="__main__":
+    main()
+
+
+
+
