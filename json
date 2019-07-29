@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
+typedef enum {
+	JSON_TYPE_VALUE = 0x00,
+	JSON_TYPE_STRING
+}JSON_TYPE;
+
+void Jason_UnPack(uint8_t type,uint8_t*dest,uint8_t *source,uint8_t*str)
+{
+	char* p; 
+	
+	if(type == JSON_TYPE_VALUE)
+	{
+		p = strstr((const char*)source,(const char*)str);
+		if(p == 0)
+		{
+			return;
+		}
+		while(*p++ != ':');
+		while(((*p) != ',')&&(((*p) != '}')))
+		{
+			*dest++ = *p++;
+		}
+	}
+	else if(type == JSON_TYPE_STRING)
+	{
+		p = strstr((const char*)source,(const char*)str);
+		if(p == 0)
+		{
+			return;
+		}
+		while(*p++ != ':');
+		while(*p++ != '"');
+		while((*p) != '"')
+		{
+			*dest++ = *p++;
+		}
+	}
+}
+
+void Jason_Pack(uint8_t type,uint8_t *dest,uint8_t *name,uint8_t *value)
+{
+	uint8_t* p;
+	uint8_t* q;
+	uint8_t* v; 
+
+	p = dest;
+	q = name;
+	v = value;
+
+	//{}
+	if(*p != '{') 
+	{
+		*p = '{';
+		*(p+1) = '}';
+	}
+
+	//{"}
+	if(*(p+1) == '}')
+	{
+		*(p+1) = '"';
+		p+=2;
+	}
+	else
+	{
+		while(*(++p) != '}');
+		*p++ = ',';
+		*p++ = '"';
+	}
+    //{":"}
+	while(*q)
+	{
+		*p++ = *q++;
+	}
+	*p++ = '"';
+	*p++ = ':';
+	
+	//{":data"}
+	if(type == JSON_TYPE_VALUE)
+	{	
+		while(*v)
+		{
+			*p++ = *v++;
+		}
+		*p = '}';
+	}
+
+	//{":string"}
+	else if(type == JSON_TYPE_STRING)
+	{
+		*p++ = '"';
+		while(*v)
+		{
+			*p++ = *v++;
+		}
+		*p++ = '"';
+		*p = '}';
+	}
+}
+
+void main()
+{
+	//使用之前记得数组要赋值清空
+	uint8_t json1[128] = {0},json2[128] ={0};
+    uint8_t name[12] = {0};
+    uint8_t buf1[128] = {0},buf2[128] = {0};
+	strcpy(name,"Name");
+
+	Jason_Pack(JSON_TYPE_VALUE,json1,name,"123");
+	Jason_Pack(JSON_TYPE_STRING,json2,name,"qazxcvbnmlpoiuytrew");
+
+	printf("pack_json1: %s\npack_json2: %s\n",json1,json2);
+	printf("Json Pack Done!!!\n");
+    
+    
+    Jason_UnPack(JSON_TYPE_VALUE,buf1,json1,name);
+    Jason_UnPack(JSON_TYPE_STRING,buf2,json2,name);
+	printf("unpack_json1: %s\nunpack_json2: %s\n",buf1,buf2);
+
+    printf("Json UnPack Done!!!\n");
+}
+
