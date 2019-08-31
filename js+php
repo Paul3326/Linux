@@ -1,0 +1,26 @@
+#html
+<html>
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+    <form method="post" action="home.php">
+        <input type="submit" name="JUMP" value="跳转PHP" />
+        <input type="submit" name="YES" value="刷新" />
+    </form>
+</body>
+</html>
+
+
+#home.php
+<!DOCTYPE html>
+<html>
+<body>
+    <?php
+        if(!empty($_POST["JUMP"]))
+            echo "完成跳转!";
+        else if(!empty($_POST["YES"]))
+            echo "哎哟,不错哦!";
+    ?>
+</body>
+</html>
