@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+#define PINS(PORT) PORT##0,PORT##1,PORT##2,PORT##3
+
+typedef enum{
+    PA = (0<<5),
+    PB = (1<<3)
+}PORT;
+
+typedef enum{
+    PINS(PA),
+    PINS(PB),
+}PIN;
+
+typedef struct{
+    int pin;
+}PINMAP;
+
+static PINMAP pinmap[] = {
+    PA0,PA1,PA2,PA3, \
+    PB0,PB1
+};
+
+#define PINCHECK(__PIN)    \
+    printf("Pin: %d\n",pinmap[__PIN])
+
+int main(int argc,char *argv[])
+{
+    PINCHECK(PB1);
+    return 0;
+}
